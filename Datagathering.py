@@ -14,7 +14,7 @@ def download_channel_audio(channel_url):
     print("Finished downloading audio files")
 
 def processAudioFiles(path: str):
-    process = subprocess.Popen(f"whisperer_ml auto-label {path} 2", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen(f"whisperer_ml transcribe {path} data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     result = []
     errcode = process.returncode
     for line in process.stdout:
@@ -22,7 +22,11 @@ def processAudioFiles(path: str):
     for line in result:
         print(line)
     if errcode is not None:
-        raise Exception("Error processing audio file")
+        raise Exception("Error Converting audio file")
+    # process = subprocess.Popen(f"whisperer_ml transcribe {path} dataset", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    # errcode = process.returncode
+    # if errcode is not None:
+    #     raise Exception("Error labelling audio file")
     
 def main():
     download_channel_audio('https://www.youtube.com/playlist?list=PL5NqZ9VtoOg5gBSAI4XlPFDKwAS7u8YXP')
